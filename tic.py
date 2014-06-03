@@ -24,7 +24,7 @@ class Cell:
         if len(self.string) > 0:
             return self.string
         else:
-            return ['x', ' ', 'o'][self.state]
+            return [' ', 'x', 'o'][self.state]
     
     def __repr__(self):
         return "<Cell (" + str(self.x) + "," + str(self.y) + ") " + str(self.state) + ">"
