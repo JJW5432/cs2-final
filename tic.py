@@ -13,9 +13,13 @@ class Cell:
     def __hash__(self):
         return hash( (self.coords, self.filled()) )
     
-    def __eq__(self, other): #doesn't matter if it's mine or yours
+    def __eq__(self, other): #matters if it's mine or yours
+        '''
+        >>> Cell(1,1,1) == Cell(1,1,-1)
+        False
+        '''
         if type(self) != type(other): return False
-        return (self.x, self.y, self.filled()) == (other.x, other.y, other.filled())
+        return (self.x, self.y, self.state) == (other.x, other.y, other.state)
 
     def __ne__(self, other):
         return not self == other
@@ -39,10 +43,10 @@ class Cell:
         return self.state == 0
     
     def mine(self):
-        return state == 1
+        return self.state == 1
 
     def theirs(self):
-        return state == -1
+        return self.state == -1
 
     def rotate(self, n=1):
         """given the coordiantes of a cell, it returns the coordinates of the cell after a n rotations of 90 degrees clockwise"""
@@ -88,7 +92,11 @@ class Board:
         return Board(map(lambda x: ~x, self.cells))
 
     def is_isomorphic(self, other):
-        return type(other) == type(self) and other in self.isoboards()
+        '''
+        >>> Board.is_isomorphic(Board.from_dict({(-1,1):"x",(0,1):"o",(1,1):" ",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "}), ~Board.from_dict({(-1,1):" ",(0,1):"o",(1,1):"x",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "}))
+        True
+        '''
+        return type(other) == type(self) and (other in self.isoboards() or ~other in self.isoboards())
 
     def __str__(self):
         """returns the string that should be printed when you print a board """
@@ -115,3 +123,8 @@ class Board:
         if not self.is_isomorphic(other):
             return False
         else: return self.isoboards()[other](move)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
