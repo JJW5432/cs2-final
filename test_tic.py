@@ -14,7 +14,7 @@ class TestCell:
         cell = Cell(x,y,1,'o')
         assert cell.coords == (x,y)
         assert str(cell) == 'o'
-        assert cell == Cell(x,y,-1)
+        assert cell != Cell(x,y,-1)
         assert cell != Cell(x,y+1,1)
         assert (~cell).state == -1
         a_board.isoboards()
@@ -54,6 +54,7 @@ class TestBoard:
             else:
                 invert += char
         assert invert == str(~board3)
+        assert board3.is_isomorphic(~board3)
     
     def test_rotate(self):
         assert str(a_board.rotate()) == deep_strip("""
