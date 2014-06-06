@@ -1,0 +1,31 @@
+td{
+    width:100px;
+    height:100px;
+    text-align: center;
+	font-family: Arial;
+	font-size: 5em;
+	text-transform: uppercase;
+	position: relative;
+}
+
+td.v{
+    border-left:1px solid #000;
+    border-right:1px solid #000;
+}
+
+td.h{
+    border-top:1px solid #000;
+    border-bottom:1px solid #000;
+}
+
+td[data-state='1']::before {
+	content: 'x';
+	position: absolute;
+	left: 24%;
+}
+
+td[data-state='-1']::before{
+	content:'o';
+	position: absolute;
+	left:20%;
+}
