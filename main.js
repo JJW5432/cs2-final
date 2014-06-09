@@ -1,5 +1,39 @@
+var cells = document.getElementsByTagName('td');
+
+function coords(n) {
+	var ys = [1, 1, 1, 0, 0, 0, -1, -1, -1],
+		xs = [-1, 0, 1, -1, 0, 1, -1, 0, 1],
+		y = ys[n-1],
+		x = xs[n-1];
+	return [x,y]
+}
+
 function getMove(cell){
-	return '1'
+	request = new XMLHttpRequest();
+	board = '';
+	for (var i in cells) {
+		cell = cells[i];
+		coord = coords(Number(cell.id))
+		board += String(coord[0]) + ',' + String(coord[1]) + String(cell.getAttribute("state"))
+	}
+	/*request.open('POST', './move.py', true);
+
+	request.onload = function() {
+  		if (request.status >= 200 && request.status < 400){
+    		// Success!
+    		resp = request.responseText;
+ 			} else {
+
+  			}
+  	return resp*/
+  	return board;
+};
+
+request.onerror = function() {
+  // There was a connection error of some sort
+};
+
+request.send();
 }
 
 function makeMove(event) {
@@ -34,7 +68,7 @@ function endGame(won) {
 	}
 }
 
-var cells = document.getElementsByTagName('td');
+
 for (var i in cells) {
 	var cell = cells[i];
 	cell.onclick = makeMove;
