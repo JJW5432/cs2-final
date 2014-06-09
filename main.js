@@ -21,28 +21,13 @@ function getMove(){
 		cell = cells[i];
 		coord = coords(Number(cell.id))
 		board += String(coord[0]) + ',' + String(coord[1]) + ',' + String(state(cell)) + ','
-	}
-    board = board.slice(0,-1);
-    console.log(board);
-	/*request.open('POST', './move.py', true);
-
-	request.onload = function() {
-  		if (request.status >= 200 && request.status < 400){
-    		// Success!
-    		resp = request.responseText;
- 			} else {
-
-  			}
-  	return resp*/
-  	return "1"
+		    }
+	var request = new XMLHttpRequest();
+	request.open('POST', './move.py', true);
+	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	request.send({'board': board});
+  	return request.response
 };
-
-/*request.onerror = function() {
-  // There was a connection error of some sort
-};
-
-request.send();
-}*/
 
 function makeMove(event) {
 	var cell = event.target
