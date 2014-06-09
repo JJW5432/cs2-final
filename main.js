@@ -20,17 +20,17 @@ function makeMove(event) {
 }
 	
 function endGame(won) {
-	var message = document.createElement("H3");
+	var el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 	if (won) {
-		message.innerHTML = "You've won!";
+		el.getElementsByTagName('p')[0].innerHTML = "You've won!";
 	} else {
-		message.innerHTML = "Sorry you lost!";
+		el.getElementsByTagName('p')[0].innerHTML = "Sorry you lost!";
 	}
-	document.body.appendChild(message);
 	var cells = document.getElementsByTagName('td');
 	for (var i in cells) {
 		var cell = cells[i];
-		cell.removeEventListener('click', makeMove);
+		cell.onclick=null;
 	}
 }
 

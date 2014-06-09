@@ -4,6 +4,8 @@
     </head>
     <body>
         <h1>Tic-Tac-Toe</h1>
+        <div class="square">
+        <div class="inner">
         <table id="board">
             <tr>
                 <td id="1" state="0">&nbsp;</td>
@@ -21,10 +23,17 @@
                 <td id="9" state="0"> &nbsp;</td>
             </tr>
         </table>
-        <svg width="300" height="300">
-            <!--<circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />-->
+        </div>
+        </div>
+       <!-- <svg width="300" height="300">
+            <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
             <rect x="100" y="100" width="100" height="100" stroke="white" stroke-width="10" fill="none" />
-        </svg>
+        </svg>-->
         <script src="main.js"></script>
+        <div id="overlay">
+            <div>
+              <p>Game Over.</p>
+            </div>
+        </div>
     </body>
 </html>
