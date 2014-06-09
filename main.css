@@ -52,9 +52,10 @@ td {
     text-align: center;
     color: white;
 	font-family: Arial;
-	font-size: 5em;
+	font-size: 10em;
 	text-transform: uppercase;
-    padding-left: 5%;
+    padding:0;
+    position:relative;
 }
 
 td.v {
@@ -65,14 +66,6 @@ td.v {
 td.h{
     border-top:5px solid white;
     border-bottom:5px solid white;
-}
-
-td[data-state='1']::before {
-	content: 'x';
-}
-
-td[data-state='-1']::before{
-	content:'o';
 }
 
 #overlay {
