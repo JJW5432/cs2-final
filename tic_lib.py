@@ -76,6 +76,14 @@ class Board:
         states = {'x': 1, 'o':-1, ' ':0, '': 0}
         return Board( [Cell(coord[0], coord[1], (states[d[coord]] if d[coord] in states else 0), d[coord]) for coord in d.keys()] )
 
+    @classmethod
+    def from_string(cls,string):
+        b = string.split(",")
+        B = []
+        for i in range(0,27,3):
+            B += [Cell(int(b[i]),int(b[i+1]),int(b[i+2]))]
+        return Board(B)
+
     def isoboards(self):
         return {self: lambda x: x, self.rotate(): lambda x: x.rotate(), self.rotate(2): lambda x: x.rotate(2), self.rotate(3): lambda x: x.rotate(3), self.reflect('v'): lambda x: x.reflect('v'), self.reflect('h'): lambda x: x.reflect('h'), self.reflect('l'): lambda x: x.reflect('l'), self.reflect('r'): lambda x: x.reflect('r')}
     def __hash__(self):
