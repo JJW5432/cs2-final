@@ -8,14 +8,22 @@ function coords(n) {
 	return [x,y]
 }
 
-function getMove(cell){
-	request = new XMLHttpRequest();
-	board = '';
-	for (var i in cells) {
+function state(cell) {
+  if (cell.innerHTML === "O") {return -1}
+  else if (cell.innerHTML === "X") {return 1}
+  else {return 0}
+}
+
+function getMove(){
+	var request = new XMLHttpRequest(),
+	   board = '';  
+	for (var i=0; i<cells.length; i++){
 		cell = cells[i];
 		coord = coords(Number(cell.id))
-		board += String(coord[0]) + ',' + String(coord[1]) + String(cell.getAttribute("state"))
+		board += String(coord[0]) + ',' + String(coord[1]) + ',' + String(state(cell)) + ','
 	}
+    board = board.slice(0,-1);
+    console.log(board);
 	/*request.open('POST', './move.py', true);
 
 	request.onload = function() {
@@ -26,23 +34,23 @@ function getMove(cell){
 
   			}
   	return resp*/
-  	return board;
+  	return "1"
 };
 
-request.onerror = function() {
+/*request.onerror = function() {
   // There was a connection error of some sort
 };
 
 request.send();
-}
+}*/
 
 function makeMove(event) {
 	var cell = event.target
-	if (cell.getAttribute("state") === "0") {
+	if (state(cell) === 0) {
 		move = getMove(cell);
 		if ('123456789'.search(move) != -1) {
-			cell.setAttribute('data-state', '-1');
-			document.getElementById(move).setAttribute('data-state', '1');
+			cell.innerHTML = 'O';
+			document.getElementById(move).innerHTML = 'X';
 		}
 		else if (move === "user") { //the game is won
 			endGame(true);
