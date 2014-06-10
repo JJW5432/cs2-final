@@ -21,6 +21,15 @@ class Cell:
         if type(self) != type(other): return False
         return (self.x, self.y, self.state) == (other.x, other.y, other.state)
 
+    def __lt__(self,other):
+        if self.y > other.y: return True
+        elif self.y == other.y:
+            return self.x < other.x
+        else: return False
+
+    def __gt__(self,other):
+        return not (self<other or self==other)
+
     def __ne__(self, other):
         return not self == other
      
@@ -69,7 +78,7 @@ class Cell:
 
 class Board:
     def __init__(self, cells):
-        self.cells = sorted(cells, key= lambda cell: cell.coords)
+        self.cells = sorted(cells)
 
     @classmethod
     def from_dict(cls,d):
@@ -131,3 +140,18 @@ class Board:
         if not self.is_isomorphic(other):
             return False
         else: return self.isoboards()[other](move)
+    
+    def serialize(self):
+        out = ''
+        for cell in self.cells:
+            out += str(cell.state) + ','
+        return out[:-1]
+
+    @classmethod
+    def unserialize(cls,s):
+        coords = [(-1,1),(0,1),(1,1),(-1,0),(0,0),(1,0),(-1,-1),(0,-1),(1,-1)]
+        s=map(int, s.split(','))
+        cells = []
+        for x in range(len(s)):
+            cells.append(Cell(coords[x][0],coords[x][1],s[x]))
+        return Board(cells)

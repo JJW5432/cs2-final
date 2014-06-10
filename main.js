@@ -30,24 +30,24 @@ function getMove(){
     request.open('POST', './move.py', false);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.send("board="+board);
-    console.log(request);
+    //console.log(request);
     return request.responseText.trim()
 };
 
 function makeMove(event) {
 	var cell = event.target
 	if (state(cell) === 0) {
-	    move = getMove(cell);
 	    cell.innerHTML = 'O';
-		if ('123456789'.search(move) != -1) {
-			document.getElementById(move).innerHTML = 'X';
-		}
-		else if (move === "user") { //the game is won
-			endGame(true);
-		}
-		else {
-			endGame(false)
-		}
+	    move = getMove(cell);
+	    if ('123456789'.search(move) != -1) {
+		document.getElementById(move).innerHTML = 'X';
+	    }
+	    else if (move === "user") { //the game is won
+		endGame(true);
+	    }
+	    else {
+		endGame(false)
+	    }
 	}
 }
 	
