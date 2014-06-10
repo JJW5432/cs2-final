@@ -77,8 +77,10 @@ class Cell:
         return Cell(x, y, self.state, self.string)
 
 class Board:
-    def __init__(self, cells):
-        self.cells = sorted(cells)
+    def __init__(self, cells=[]):
+        self.cells = [Cell(-1,1),Cell(0,1),Cell(1,1),Cell(-1,0),Cell(0,0),Cell(1,0),Cell(-1,-1),Cell(0,-1),Cell(1,-1)]
+        for x in cells:
+            self.set_cell(x)
 
     @classmethod
     def from_dict(cls,d):
@@ -181,3 +183,16 @@ class Board:
                 self.cells.append(Cell(x,y,state))
                 self.cells.sort()
                 break
+
+    def get_cell(self,x,y):
+        return [cell for cell in self.cells if cell.x == x and cell.y == y][0]
+
+    def set_cell(self,ncell):
+        for cell in self.cells:
+            if cell.x == ncell.x and cell.y == ncell.y:
+                self.cells.remove(cell)
+                self.cells.append(ncell)
+                self.cells.sort()
+                break
+    
+    cell = property(get_cell, set_cell)
