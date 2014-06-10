@@ -155,3 +155,29 @@ class Board:
         for x in range(len(s)):
             cells.append(Cell(coords[x][0],coords[x][1],s[x]))
         return Board(cells)
+    
+    def over(self):
+        cells = self.cells
+        lanes = []
+        lanes.append([cell for cell in cells if cell.x == -1])
+        lanes.append([cell for cell in cells if cell.x == 0])
+        lanes.append([cell for cell in cells if cell.x == 1])
+        lanes.append([cell for cell in cells if cell.y == -1])
+        lanes.append([cell for cell in cells if cell.y == 0])
+        lanes.append([cell for cell in cells if cell.y == 1])
+        lanes.append([cell for cell in cells if cell.x == cell.y])
+        lanes.append([cell for cell in cells if cell.x == -cell.y])
+        for lane in lanes:
+            states = [cell.state for cell in lane]
+            if max(states) == -1: return -1
+            elif min(states) == 1: return 1
+        if len([cell for cell in cells if cell.empty()]) == 0: return 'tie'
+        else: return False #not over
+
+    def move(self,x,y,state):
+        for cell in self.cells:
+            if cell.x == x and cell.y == y:
+                self.cells.remove(cell)
+                self.cells.append(Cell(x,y,state))
+                self.cells.sort()
+                break
