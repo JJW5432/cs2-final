@@ -76,11 +76,11 @@ class Cell:
             (x,y) = (y, x)
         return Cell(x, y, self.state, self.string)
 
-class Board:
+class Board(object):
     def __init__(self, cells=[]):
-        self.cells = [Cell(-1,1),Cell(0,1),Cell(1,1),Cell(-1,0),Cell(0,0),Cell(1,0),Cell(-1,-1),Cell(0,-1),Cell(1,-1)]
+        self.cells = sorted([Cell(-1,1),Cell(0,1),Cell(1,1),Cell(-1,0),Cell(0,0),Cell(1,0),Cell(-1,-1),Cell(0,-1),Cell(1,-1)])
         for x in cells:
-            self.set_cell(x)
+            self.cell = x
 
     @classmethod
     def from_dict(cls,d):
@@ -97,6 +97,7 @@ class Board:
 
     def isoboards(self):
         return {self: lambda x: x, self.rotate(): lambda x: x.rotate(), self.rotate(2): lambda x: x.rotate(2), self.rotate(3): lambda x: x.rotate(3), self.reflect('v'): lambda x: x.reflect('v'), self.reflect('h'): lambda x: x.reflect('h'), self.reflect('l'): lambda x: x.reflect('l'), self.reflect('r'): lambda x: x.reflect('r')}
+    
     def __hash__(self):
         return hash( tuple([hash(cell) for cell in self.cells]) )
     
@@ -121,7 +122,7 @@ class Board:
         """returns the string that should be printed when you print a board """
         out = ''
         for n in [1,0,-1]:
-             out += "|".join([str(point) for point in sorted(self.cells,key = lambda x: x.coords) if point.coords[1] == n])
+             out += "|".join([str(cell) for cell in self.cells if cell.y == n])
              out +="\n"
         return out.strip('\n')
         
@@ -176,23 +177,16 @@ class Board:
         if len([cell for cell in cells if cell.empty()]) == 0: return 'tie'
         else: return False #not over
 
-    def move(self,x,y,state):
-        for cell in self.cells:
-            if cell.x == x and cell.y == y:
-                self.cells.remove(cell)
-                self.cells.append(Cell(x,y,state))
-                self.cells.sort()
-                break
-
-    def get_cell(self,x,y):
+    def cell(self,x,y):
         return [cell for cell in self.cells if cell.x == x and cell.y == y][0]
-
-    def set_cell(self,ncell):
-        for cell in self.cells:
-            if cell.x == ncell.x and cell.y == ncell.y:
-                self.cells.remove(cell)
-                self.cells.append(ncell)
-                self.cells.sort()
-                break
-    
-    cell = property(get_cell, set_cell)
+        
+    def __setattr__(self, name, value):
+        if name == 'move' and isinstance(value,Cell):
+            for cell in self.cells:
+                if cell.x == value.x and cell.y == value.y:
+                    self.cells.remove(cell)
+                    self.cells.append(value)
+                    self.cells.sort()
+                    break
+                    
+        else: super(Board, self).__setattr__(name, value)
