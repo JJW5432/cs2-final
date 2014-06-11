@@ -26,10 +26,13 @@ function getBoard() {
 
 function getMove(){
     var board = getBoard(), results;
-    $.post('./move.py', {'board':board})
-    	.done(function(data){
-    		results = data
-    	});
+    $.ajax({
+		type: 'POST',
+		url: './move.py',
+		data: {'board':board},
+		success: function(data){results = data}),
+		async:false
+	});
     return results.trim()
 };
 
