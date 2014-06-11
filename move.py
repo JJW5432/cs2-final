@@ -9,10 +9,18 @@ cgitb.enable()
 fs = cgi.FieldStorage()
 
 input_board = Board.unserialize(fs['board'].value)#given board as string)
+<<<<<<< HEAD
 
 over = Board.over()
 if not over:
 	move = input_board.randomMove()
 
+=======
+
+over = Board.over()
+if not over:
+	move = input_board.randomMove()
+
+>>>>>>> 1e83fcc1d259b26dbdc0a192e224dc7f5ca4ad1f
 	print move.num
 else: print over
