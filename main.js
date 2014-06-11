@@ -26,10 +26,10 @@ function getBoard() {
 
 function getMove(){
     var board = getBoard(), results;
-    $.post('./move.py', {'board':board})
-    	.done(function(data){
+    $.post('./move.py', {'board':board}, function(data){
     		results = data
-    	});
+    	}
+    );
     return data.trim()
 };
 
