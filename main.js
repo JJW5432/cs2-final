@@ -74,8 +74,10 @@ function endGame(winner) {
 	    p.addClass('tie');
 	}
 	cells.off('click')
+	date = new Date()
+	date = date.toISOString()
     $.each(memory, function(i, val){
-	memory[i] = val + String(outcome);
+	memory[i] = val + String(outcome) +',' + date;
 })
 	$.ajax({
 		type: 'POST',
