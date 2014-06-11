@@ -1,6 +1,6 @@
 #!/usr/bin/python
+print "Content-Type: text/html\n"
 print ""
-
 from tic_lib import *
 
 import random
@@ -11,11 +11,10 @@ cgitb.enable()
 fs = cgi.FieldStorage()
 
 def parseLine(line):
-    pos = line[1:].find('"')
-    board= board.from_string(line[1:pos])
-    line = map(int, line[pos+1:].split(',')) #[cell,player,outcome]
-    coords = int_to_coords(line[0])
-    move = Cell(coords[0], coords[1], 1)
+    pos = line[1:].find('"')+1
+    board= Board.unserialize(line[1:pos])
+    line = map(int, line[pos+2:].split(',')) #[cell,player,outcome]
+    move = Cell(line[0], 0)
     outcome = line[2]
     return {'board': board, 'move':move, 'outcome':outcome}
 
@@ -24,7 +23,7 @@ def chooseMove():
     weighted_moves = []
     for move in moves:
         record = moves[move]
-        ratio = round(record[0]/sum(record),3)*1000
+        ratio = int(round(record[0]/sum(record),3)*1000)
         weighted_moves.extend([move]*ratio)
     return random.choice(weighted_moves)
 
