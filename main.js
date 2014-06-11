@@ -4,14 +4,6 @@ cells.click(makeMove)
 $("#win").click(function(){endGame(true); return false})
 $("#lose").click(function(){endGame(false); return false})
 
-function coords(n) {
-	var ys = [1, 1, 1, 0, 0, 0, -1, -1, -1],
-		xs = [-1, 0, 1, -1, 0, 1, -1, 0, 1],
-		y = ys[n-1],
-		x = xs[n-1];
-	return [x,y]
-}
-
 function state(cell) {
   if (cell.innerHTML === "O") {return -1}
   else if (cell.innerHTML === "X") {return 1}
@@ -48,7 +40,7 @@ function makeMove(event) {
 	    if ('123456789'.search(move) != -1) {
 	    	move_cell = document.getElementById(move)
 			move_cell.innerHTML = 'X';
-			memory.append("\""+getBoard()+"\","+move_.id+",1,")
+			memory.append("\""+getBoard()+"\","+move_cell.id+",1,")
 	    }
 	    else if (move === "user") { //the game is won
 			endGame(true);
