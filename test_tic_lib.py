@@ -1,9 +1,9 @@
 from tic_lib import *
 
-a_board = Board.from_dict({(-1,1): '1', (0,1): '2', (1,1): '3', (-1,0):'4', (0,0): '5', (1,0): '6', (-1,-1): '7', (0,-1): '8', (1,-1): '9'})
-board1 = Board.from_dict({(-1,1):"x",(0,1):"o",(1,1):"x",(-1,0):"x",(0,0):"x",(1,0):"o",(-1,-1):"o",(0,-1):" ",(1,-1):"o"})
-board2 = Board.from_dict({(-1,1):"x",(0,1):"o",(1,1):" ",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "})  
-board3 = Board.from_dict({(-1,1):" ",(0,1):"o",(1,1):"x",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "})
+a_board = Board.from_list(range(1,10))
+board1  = Board.from_list(["x","o","x","x","x","o","o"," ","o"])
+board2  = Board.from_list(["x","o"," "," "," "," "," "," "," "])  
+board3  = Board.from_list([" ","o","x"," "," "," "," "," "," "])
 
 def deep_strip(s):
         return '\n'.join([l.strip() for l in s.split('\n')]).strip()
@@ -11,7 +11,7 @@ def deep_strip(s):
 class TestCell:
     def test_basic(self):
         x, y = random.randrange(-1,2), random.randrange(-1,2)
-        cell = Cell(x,y,1,'o')
+        cell = Cell((x,y),1,'o')
         assert cell.coords == (x,y)
         assert str(cell) == 'o'
         assert cell != Cell(x,y,-1)
@@ -20,23 +20,23 @@ class TestCell:
         a_board.isoboards()
 
     def test_rotate(self):
-        cell = Cell(-1,1)
-        assert cell.rotate( ) == Cell(1,1)
-        assert cell.rotate(2) == Cell(1,-1)
-        assert cell.rotate(3) == Cell(-1,-1)
+        cell = Cell((-1,1))
+        assert cell.rotate( ) == Cell((1,1))
+        assert cell.rotate(2) == Cell((1,-1))
+        assert cell.rotate(3) == Cell((-1,-1))
         assert cell.rotate(4) == cell
     
     def test_reflect(self):
-        cell = Cell(-1,1)
-        assert cell.reflect('v') == Cell(1,1)
-        assert cell.reflect('h') == Cell(-1,-1)
+        cell = Cell((-1,1))
+        assert cell.reflect('v') == Cell((1,1))
+        assert cell.reflect('h') == Cell((-1,-1))
         assert cell.reflect('l') == cell
-        assert cell.reflect('r') == Cell(1, -1)
+        assert cell.reflect('r') == Cell((1, -1))
         
 
 class TestBoard:
     def test_basic(self):
-        assert a_board == Board([Cell(-1, 1, 0, '1'), Cell(0, 1, 0, '2'), Cell(1, 1, 0, '3'), Cell(-1, 0, 0, '4'), Cell(0, 0, 0, '5'), Cell(1, 0, 0, '6'), Cell(-1, -1, 0, '7'), Cell(0, -1, 0, '8'), Cell(1, -1, 0, '9')])
+        assert a_board == Board([Cell((-1, 1), 0, '1'), Cell((0, 1), 0, '2'), Cell((1, 1), 0, '3'), Cell((-1, 0), 0, '4'), Cell((0, 0), 0, '5'), Cell((1, 0), 0, '6'), Cell((-1, -1), 0, '7'), Cell((0, -1), 0, '8'), Cell((1, -1), 0, '9')])
         assert str(a_board) == deep_strip("""
         1|2|3
         4|5|6
@@ -103,6 +103,6 @@ class TestBoard:
         assert not board1.randomMove().filled()
 
     def test_matchMove(self):
-        assert board2.matchMove(board3,Cell(1,1)) == Cell(-1,1)
-        assert board2.matchMove(board1,Cell(1,1)) == False
-        assert board2.matchMove(board2,Cell(1,1)) == Cell(1, 1)
+        assert board2.matchMove(board3,Cell((1,1))) == Cell((-1,1))
+        assert board2.matchMove(board1,Cell((1,1))) == False
+        assert board2.matchMove(board2,Cell((1,1))) == Cell((1, 1))

@@ -1,9 +1,14 @@
 import random
 
-class Cell:
-    def __init__(self, x, y, state=0, string=''):
-        self.coords = (x,y)
-        self.x, self.y = x, y
+class Cell(object):
+    def __init__(self, n, state=0, string=''):
+        if type(n) == tuple:
+            self.x, self.y = n
+            self.num=Cell.coords_to_num(self.x, self.y)
+        else:
+            self.num = n
+            self.x, self.y = Cell.num_to_coords(self.num)
+        self.coords = (self.x,self.y)
         self.state = state
         self.string = string
     
@@ -11,24 +16,17 @@ class Cell:
         return self.state != 0
     
     def __hash__(self):
-        return hash( (self.coords, self.filled()) )
+        return hash( (self.num, self.filled()) )
     
     def __eq__(self, other): #matters if it's mine or yours
-        '''
-        >>> Cell(1,1,1) == Cell(1,1,-1)
-        False
-        '''
         if type(self) != type(other): return False
-        return (self.x, self.y, self.state) == (other.x, other.y, other.state)
+        return (self.num, self.state) == (other.num, other.state)
 
     def __lt__(self,other):
-        if self.y > other.y: return True
-        elif self.y == other.y:
-            return self.x < other.x
-        else: return False
+        return self.num < other.num
 
     def __gt__(self,other):
-        return not (self<other or self==other)
+        return self.num > other.num
 
     def __ne__(self, other):
         return not self == other
@@ -40,13 +38,13 @@ class Cell:
             return [' ', 'x', 'o'][self.state]
     
     def __repr__(self):
-        return "<Cell (" + str(self.x) + "," + str(self.y) + ") " + str(self.state) + ">"
+        return "<Cell " + str(self.num) + ' ' + str(self.state) + ">"
 
     def __invert__(self):
         if self.string == 'x': string = 'o'
         elif self.string == 'o': string = 'x'
         else: string = self.string
-        return Cell(self.coords[0], self.y, self.state*-1, string)
+        return Cell(self.num, self.state*-1, string)
 
     def empty(self):
         return self.state == 0
@@ -62,7 +60,7 @@ class Cell:
         (x,y) = self.coords
         for i in range(n):
                 (x,y) = (y, -1*x)
-        return Cell(x,y, self.state,self.string)
+        return Cell((x,y), self.state,self.string)
 
     def reflect(self,d):
         (x,y) = self.coords
@@ -74,26 +72,26 @@ class Cell:
             (x,y) = (-1*y, -1*x)
         elif d == 'r': #top-right to bottom-left
             (x,y) = (y, x)
-        return Cell(x, y, self.state, self.string)
+        return Cell((x,y), self.state, self.string)
+
+    @classmethod
+    def coords_to_num(cls,x,y):
+        return x-3*y+5
+
+    @classmethod
+    def num_to_coords(cls,n):
+        return ((n-1)%3-1, -((n-1)/3)+1)
 
 class Board(object):
     def __init__(self, cells=[]):
-        self.cells = sorted([Cell(-1,1),Cell(0,1),Cell(1,1),Cell(-1,0),Cell(0,0),Cell(1,0),Cell(-1,-1),Cell(0,-1),Cell(1,-1)])
-        for x in cells:
-            self.cell = x
+        self.cells = sorted([Cell(x) for x in range(1,10)])
+        for cell in cells:
+            self.move(cell)
 
     @classmethod
-    def from_dict(cls,d):
+    def from_list(cls,d):
         states = {'x': 1, 'o':-1, ' ':0, '': 0}
-        return Board( [Cell(coord[0], coord[1], (states[d[coord]] if d[coord] in states else 0), d[coord]) for coord in d.keys()] )
-
-    @classmethod
-    def from_string(cls,string):
-        b = string.split(",")
-        B = []
-        for i in range(0,27,3):
-            B += [Cell(int(b[i]),int(b[i+1]),int(b[i+2]))]
-        return Board(B)
+        return Board( [Cell(x+1,(states[d[x]] if d[x] in states else 0), str(d[x])) for x in range(9)] )
 
     def isoboards(self):
         return {self: lambda x: x, self.rotate(): lambda x: x.rotate(), self.rotate(2): lambda x: x.rotate(2), self.rotate(3): lambda x: x.rotate(3), self.reflect('v'): lambda x: x.reflect('v'), self.reflect('h'): lambda x: x.reflect('h'), self.reflect('l'): lambda x: x.reflect('l'), self.reflect('r'): lambda x: x.reflect('r')}
@@ -109,7 +107,7 @@ class Board(object):
         return not self == other
 
     def __invert__(self):
-        return Board(map(lambda x: ~x, self.cells))
+        return Board([~cell for cell in self.cells])
 
     def is_isomorphic(self, other):
         '''
@@ -152,12 +150,8 @@ class Board(object):
 
     @classmethod
     def unserialize(cls,s):
-        coords = [(-1,1),(0,1),(1,1),(-1,0),(0,0),(1,0),(-1,-1),(0,-1),(1,-1)]
         s=map(int, s.split(','))
-        cells = []
-        for x in range(len(s)):
-            cells.append(Cell(coords[x][0],coords[x][1],s[x]))
-        return Board(cells)
+        return Board([Cell(x,s[x-1]) for x in range(1,10)])
     
     def over(self):
         cells = self.cells
@@ -177,19 +171,19 @@ class Board(object):
         if len([cell for cell in cells if cell.empty()]) == 0: return 'tie'
         else: return False #not over
 
-    def cell(self,x,y):
-        return [cell for cell in self.cells if cell.x == x and cell.y == y][0]
+    def cell(self,n):
+        if type(n) is tuple:
+            x,y=n
+            return [cell for cell in self.cells if cell.x == x and cell.y == y][0]
+        else: return [cell for cell in self.cells if cell.n==n][0]
         
-    def __setattr__(self, name, value):
-        if name == 'move' and isinstance(value,Cell):
-            for cell in self.cells:
-                if cell.x == value.x and cell.y == value.y:
-                    self.cells.remove(cell)
-                    self.cells.append(value)
-                    self.cells.sort()
-                    break
-                    
-        else: super(Board, self).__setattr__(name, value)
+    def move(self, ncell):
+        for cell in self.cells:
+            if ncell.num == cell.num:
+                self.cells.remove(cell)
+                self.cells.append(ncell)
+                self.cells.sort()
+                break
 
     def empties():
         return [cell for cell in cells if cell.empty()]
