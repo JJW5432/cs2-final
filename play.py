@@ -1,11 +1,16 @@
+#!/usr/bin/python
+print ""
+
 from tic_lib import *
 
 import cgi
+import cgitb
+cgitb.enable()
 fs = cgi.FieldStorage()
 
-board = Board.from_string(fs['board'].value)
+board = Board.from_string(fs['board'].value) # given board as string
 empties = board.empties()
-moves = {cell: [0., 0., 0.] for cell in empties} #[wins, losses]
+moves = {cell: [0., 0.] for cell in empties} #[wins, losses]
 
 fileMemory = open("memory.csv")
 memory = fileMemory.read()
@@ -29,60 +34,34 @@ def int_to_coords(n):
     x = xs[n-1]
     return [x,y]
 
-
 def parseLine(line):
     pos = line[1:].find('"')
     board= board.from_string(line[1:pos])
     line = map(int, line[pos+1:].split(',')) #[cell,player,outcome]
     coords = int_to_coords(line[0])
     move = Cell(coords[0], coords[1], 1)
-    outcome =line[2]
+    outcome = line[2]
     return {'board': board, 'move':move, 'outcome':outcome}
     
-                                   
-            
-                                   
-
-
-def findMemory(b):
-    '''gets list of moves and outcomes in isomorphic situations
-    returns a list of possible moves [Cell, wins, losses, win/total, player] for all moves in memory
-    '''
-    L = [] #list of possible moves [Cell, wins, losses, win/total, player]
-    for move in memory: # list in memory
-        if Board.is_isomorphic(move[0],b): # tests if given board is same as board in memory
-            play = Board.matchMove(move[0],b,move[1]) # equivalent move in isomorphic board
-            newPlay = True # tests if new move needs to be added
-            for m in L:
-                if m[0] == play: #if cells are equal
-                    if move[3] == 1: #if I won
-                        m[1] += 1.0 #increase wins by 1
-                    elif move[3] == -1: #else if I lost
-                        m[2] += 1.0 #increase losses by 1
-                    newPlay = False 
-            if newPlay == True: #no mathching moves in L
-                L += [[move[1],0.0,0.0,0.0,move[2]]] #add new blank move
-                if move[3] == 1: #if I won...
-                    m[1] += 1.0
-                elif move[3] == -1: #if I lost...
-                    m[2] += 1.0
-    return L
-
 def rankMoves(moves):
-    '''orders moves based on win percentage'''
+    '''orders moves into list based on win percentage'''
     ranked = []
-    for move in moves:
-        move[3] = move[1] / (move[1] + move[2])
-    for move in moves:
+    for cell in moves: # for a possible move in dictionary
+        ratio = move[0] / (move[1] + move[0]) # ratio of wins to total games
         i = 0
-        while i < len(ranked) and move[3] < ranked[i][3]:
+        while i < len(ranked) and ratio < ranked[i][1]:
             i += 1
-        ranked = ranked[:i] + [move] + ranked[i:]
-    return ranked
-
-def chooseMove(b):
+        ranked = ranked[:i] + [[cell,ratio]]+ ranked[i:]
+    return ranked                                  
+           
+def chooseMove():
     '''uses weighted probabilities to choose move'''
-    for move in rankMoves(findMemory(b)):
-        if random.random() < move[3]:
-            return move[3]
-    return Board.randomMove(b)
+    for move in rankMoves(moves):
+        if random.random() < move[1]:
+            return move[1]
+    return Board.randomMove(board)
+
+move = chooseMove()
+cell_to_num = lambda x,y: x-3*y+5
+
+print cell_to_num(*move.coords)
