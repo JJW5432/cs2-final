@@ -178,11 +178,12 @@ class Board(object):
             return [True, 'tie', '']
         else: return [False]
 
-    def cell(self,n):
-        if type(n) is tuple:
-            x,y=n
+    def __getitem__(self, key):
+        if type(key) is slice:
+            x,y=key.start,key.stop
+            if abs(x) > 1 or abs(y) > 1: raise IndexError, 'list index out of range'
             return [cell for cell in self.cells if cell.x == x and cell.y == y][0]
-        else: return [cell for cell in self.cells if cell.n==n][0]
+        else: return [cell for cell in self.cells if cell.num==key][0]
         
     def move(self, ncell):
         for cell in self.cells:
