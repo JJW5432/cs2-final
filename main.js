@@ -30,7 +30,7 @@ function getMove(){
 		type: 'POST',
 		url: './move.py',
 		data: {'board':board},
-		success: function(data){results = data}),
+		success: function(data){results = data},
 		async:false
 	});
     return results.trim()
