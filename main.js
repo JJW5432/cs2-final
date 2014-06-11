@@ -1,6 +1,8 @@
 var cells = $('td'),
 	memory = []
 cells.click(makeMove)
+$("#win").click(function(){endGame(true); return false})
+$("#lose").click(function(){endGame(false); return false})
 
 function coords(n) {
 	var ys = [1, 1, 1, 0, 0, 0, -1, -1, -1],
