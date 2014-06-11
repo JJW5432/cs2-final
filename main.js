@@ -1,4 +1,5 @@
-var cells = document.getElementsByTagName('td');
+var cells = $('td'),
+	memory = []
 
 function coords(n) {
 	var ys = [1, 1, 1, 0, 0, 0, -1, -1, -1],
@@ -16,37 +17,38 @@ function state(cell) {
 
 function getBoard() {
     board = '';  
-    for (var i=0; i<cells.length; i++){
-	cell = cells[i];
-	coord = coords(Number(cell.id))
-	board += String(coord[0]) + ',' + String(coord[1]) + ',' + String(state(cell)) + ','
-    }
+    cells.each(function(){
+		coord = coords(Number(this.id))
+		board += String(coord[0]) + ',' + String(coord[1]) + ',' + String(state(this)) + ','
+    })
     return board.slice(0,-1)
 }
 
 function getMove(){
-    var request = new XMLHttpRequest(),
-    board = getBoard()
-    request.open('POST', './move.py', false);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.send("board="+board);
-    //console.log(request);
-    return request.responseText.trim()
+    var board = getBoard(), results;
+    $.post('./move.py', {'board':board})
+    	.done(function(data){
+    		results = data
+    	});
+    return data.trim()
 };
 
 function makeMove(event) {
 	var cell = event.target
 	if (state(cell) === 0) {
 	    cell.innerHTML = 'O';
+	    memory.append("\""+getBoard()+"\","+cell.id+",-1,")
 	    move = getMove(cell);
 	    if ('123456789'.search(move) != -1) {
-		document.getElementById(move).innerHTML = 'X';
+	    	move_cell = document.getElementById(move)
+			move_cell.innerHTML = 'X';
+			memory.append("\""+getBoard()+"\","+move_.id+",1,")
 	    }
 	    else if (move === "user") { //the game is won
-		endGame(true);
+			endGame(true);
 	    }
 	    else {
-		endGame(false)
+			endGame(false)
 	    }
 	}
 }
