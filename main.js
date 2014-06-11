@@ -74,6 +74,7 @@ function endGame(winner) {
 		type: 'POST',
 		url: './memory.py',
 		data: {'memory':memory.join('\n')},
+	    success: function(data){console.log(data)},
 		async: true
 	});
 }

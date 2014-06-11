@@ -74,6 +74,9 @@ class Cell(object):
             (x,y) = (y, x)
         return Cell((x,y), self.state, self.string)
 
+    def with_state(self,state):
+        return Cell(self.num, state, self.string)
+
     @classmethod
     def coords_to_num(cls,x,y):
         return x-3*y+5

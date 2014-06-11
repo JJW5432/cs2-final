@@ -49,6 +49,10 @@ if not over[0]:
                 
     move = chooseMove()
 
-    print move.num
-
+    board.move(move.with_state(1))
+    over_now = board.over()
+    if over_now[0]:
+        print str(over_now[1]) + "\n" + over_now[2]
+    else: print move.num
+    
 else: print str(over[1]) + "\n" + over[2]
