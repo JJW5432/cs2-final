@@ -49,9 +49,11 @@ function endGame(winner) {
     console.log(winner)
     var el = $("#overlay"),
     p = el.find('p'),
-    winner = winner.split('\n');
+    winner = winner.split('\n'),
+    outcome;
 	el.toggleClass('visible')
 	if (winner[0] === "user") {
+	    outcome = -1
 	    lane = winner[1].split(',')
 	    p.html("You&rsquo;ve won!");
 		p.addClass('win');
@@ -59,6 +61,7 @@ function endGame(winner) {
 		$("#"+val).addClass('win')
 	    })
 	} else if (winner[0] === "computer") {
+	    outcome = 1
 	    lane = winner[1].split(',')
 	    p.html("Sorry you lost!");
 	    p.addClass('lose');
@@ -66,10 +69,16 @@ function endGame(winner) {
 		$("#"+val).addClass('lose')
 	    })
 	} else if (winner[0] === "tie") {
+	    outcome = 0
 	    p.html("A tie!");
 	    p.addClass('tie');
 	}
 	cells.off('click')
+	date = new Date()
+	date = date.toISOString()
+    $.each(memory, function(i, val){
+	memory[i] = val + String(outcome) +',' + date;
+})
 	$.ajax({
 		type: 'POST',
 		url: './memory.py',
