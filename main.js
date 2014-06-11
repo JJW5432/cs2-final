@@ -69,4 +69,10 @@ function endGame(won) {
 		p.addClass('lose');
 	}
 	cells.off('click')
+	$.ajax({
+		type: 'POST',
+		url: './memory.py',
+		data: {'memory':memory.join('\n')},
+		async: true
+	});
 }
