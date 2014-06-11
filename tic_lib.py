@@ -185,5 +185,5 @@ class Board(object):
                 self.cells.sort()
                 break
 
-    def empties():
+    def empties(self):
         return [cell for cell in cells if cell.empty()]
