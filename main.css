@@ -8,7 +8,7 @@ h1 {
     color: white;
     text-align: center;
     font-size: 3em;
-    font-family: 'Nova Square', Arial;
+    font-family: 'Yanone Kaffeesatz', Arial;
     text-transform: small-caps;
 }
 
@@ -97,7 +97,7 @@ td.h{
     color:white;
     font-size: 10em;
     text-align: center;
-    font-family: 'Nova Square', Arial;
+    font-family: 'Yanone Kaffeesatz', Arial;
     -webkit-transition: background-color 2000ms linear, visibility 2000ms linear;
     -moz-transition: background-color 2000ms linear, visibility 2000ms linear;
     -o-transition: background-color 2000ms linear, visibility 2000ms linear;
