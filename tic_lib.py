@@ -186,4 +186,4 @@ class Board(object):
                 break
 
     def empties(self):
-        return [cell for cell in cells if cell.empty()]
+        return [cell for cell in self.cells if cell.empty()]
