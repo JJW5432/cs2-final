@@ -190,3 +190,6 @@ class Board(object):
                     break
                     
         else: super(Board, self).__setattr__(name, value)
+
+    def empties():
+        return [cell for cell in cells if cell.empty()]
