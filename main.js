@@ -1,5 +1,6 @@
 var cells = $('td'),
 	memory = []
+cells.click(makeMove)
 
 function coords(n) {
 	var ys = [1, 1, 1, 0, 0, 0, -1, -1, -1],
@@ -30,7 +31,7 @@ function getMove(){
 		type: 'POST',
 		url: './move.py',
 		data: {'board':board},
-		success: function(data){results = data}),
+		success: function(data){results = data},
 		async:false
 	});
     return results.trim()
@@ -40,7 +41,7 @@ function makeMove(event) {
 	var cell = event.target
 	if (state(cell) === 0) {
 	    cell.innerHTML = 'O';
-	    memory.append("\""+getBoard()+"\","+cell.id+",-1,")
+	    memory.push("\""+getBoard()+"\","+cell.id+",-1,")
 	    move = getMove(cell);
 	    if ('123456789'.search(move) != -1) {
 	    	move_cell = document.getElementById(move)
@@ -57,22 +58,15 @@ function makeMove(event) {
 }
 	
 function endGame(won) {
-	var el = document.getElementById("overlay");
-	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+	var el = $("#overlay"),
+		p = el.find('p');
+	el.toggleClass('visible')
 	if (won) {
-		el.getElementsByTagName('p')[0].innerHTML = "You've won!";
+		p.html("You&rsquo;ve won!");
+		p.addClass('win');
 	} else {
-		el.getElementsByTagName('p')[0].innerHTML = "Sorry you lost!";
+		p.html("Sorry you lost!");
+		p.addClass('lose');
 	}
-	var cells = document.getElementsByTagName('td');
-	for (var i in cells) {
-		var cell = cells[i];
-		cell.onclick=null;
-	}
-}
-
-
-for (var i in cells) {
-	var cell = cells[i];
-	cell.onclick = makeMove;
+	cells.off('click')
 }
