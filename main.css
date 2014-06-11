@@ -70,7 +70,7 @@ td.h{
 }
 
 #overlay.visible {
-    opacity : 0.4;
+    opacity : 0.75;
     position: fixed;
     top: 0;
     left: 0;
@@ -105,5 +105,6 @@ td.h{
     transition: background-color 2000ms linear, visibility 2000ms linear;
 }
 
-#overlay.visible p.win{background-color:green;}
-#overlay.visible p.lose{background-color:red;}
+.win{background-color:green;}
+.lose{background-color:red;}
+.tie{background-color:#8b8b0a;}

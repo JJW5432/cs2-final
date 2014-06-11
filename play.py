@@ -29,21 +29,26 @@ def chooseMove():
 
 board = Board.unserialize(fs['board'].value) # given board as string
 empties = board.empties()
-moves = {cell: [1., 1.] for cell in empties} #[wins, losses]
+over = board.over()
 
-memory = open("memory.csv")
+if not over[0]:
+    moves = {cell: [1., 1.] for cell in empties} #[wins, losses]
 
-for line in memory:
-    line = parseLine(line)
-    if line['board'].is_isomorphic(board):
-        move = board.matchMove(line['board'], line['move'])
-        if line['outcome'] == 1:
-            moves[move][0] += 1 #wins
-        elif line['outcome'] == -1:
-            moves[move][1] += 1 #losses
+    memory = open("memory.csv")
 
-memory.close()                          
-        
-move = chooseMove()
+    for line in memory:
+        line = parseLine(line)
+        if line['board'].is_isomorphic(board):
+            move = board.matchMove(line['board'], line['move'])
+            if line['outcome'] == 1:
+                moves[move][0] += 1 #wins
+            elif line['outcome'] == -1:
+                moves[move][1] += 1 #losses
 
-print move.num
+    memory.close()                          
+                
+    move = chooseMove()
+
+    print move.num
+
+else: print str(over[1]) + "\n" + over[2]

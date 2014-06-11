@@ -166,10 +166,17 @@ class Board(object):
         lanes.append([cell for cell in cells if cell.x == -cell.y])
         for lane in lanes:
             states = [cell.state for cell in lane]
-            if max(states) == -1: return -1
-            elif min(states) == 1: return 1
-        if len([cell for cell in cells if cell.empty()]) == 0: return 'tie'
-        else: return False #not over
+            if max(states) == -1:
+                winner = 'user'
+                the_lane = ','.join([str(cell.num) for cell in lane])
+                return [True, winner, the_lane]
+            elif min(states) == 1:
+                winner = 'computer'
+                the_lane = ','.join([str(cell.num) for cell in lane])
+                return [True, winner, the_lane]
+        if len(self.empties()) == 0:
+            return [True, 'tie', '']
+        else: return [False]
 
     def cell(self,n):
         if type(n) is tuple:
