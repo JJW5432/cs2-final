@@ -53,7 +53,7 @@ function endGame(winner) {
     outcome;
 	el.toggleClass('visible')
 	if (winner[0] === "user") {
-	    outcome = -1
+	    outcome = -1*(9-memory.length+1)
 	    lane = winner[1].split(',')
 	    p.html("You&rsquo;ve won!");
 		p.addClass('win');
@@ -61,7 +61,7 @@ function endGame(winner) {
 		$("#"+val).addClass('win')
 	    })
 	} else if (winner[0] === "computer") {
-	    outcome = 1
+	    outcome = memory.length
 	    lane = winner[1].split(',')
 	    p.html("Sorry you lost!");
 	    p.addClass('lose');

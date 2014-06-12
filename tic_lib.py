@@ -119,6 +119,9 @@ class Board(object):
         '''
         return type(other) == type(self) and (other in self.isoboards() or ~other in self.isoboards())
 
+    def fuzzy_isomorphic(self,other):
+        return self.theirs().is_isomorphic(other.theirs()) or self.mine().is_isomorphic(other.mine())
+    
     def __str__(self):
         """returns the string that should be printed when you print a board """
         out = ''
@@ -214,3 +217,9 @@ class Board(object):
         if cell.x == cell.y: return [ncell for ncell in self.cells if ncell.x == ncell.y]
         elif cell.x == -cell.y: return [ncell for ncell in self.cells if ncell.x == -ncell.y]
         else: return False
+
+    def mine(self):
+        return Board([cell for cell in self.cells if cell.mine()])
+
+    def theirs(self):
+        return Board([cell for cell in self.cells if cell.theirs()]) 

@@ -23,8 +23,8 @@ def chooseMove():
     weighted_moves = []
     for move in moves:
         record = moves[move]
-        ratio = int(round(record[0]/sum(record),3)*1000)
-        weighted_moves.extend([move]*ratio)
+        if record < 10: record = 10 #so every move has hope
+        weighted_moves.extend([move]*record)
     return random.choice(weighted_moves)
 
 board = Board.unserialize(fs['board'].value) # given board as string
@@ -33,18 +33,15 @@ empties = board.empties()
 over = board.over()
 
 if not over[0]:
-    moves = {cell: [1., 1.] for cell in empties} #[wins, losses]
+    moves = {cell: 100 for cell in empties} 
 
     memory = open("memory.csv")
 
     for line in memory:
         line = parseLine(line)
-        if line['board'].is_isomorphic(board):
+        if line['board'].fuzzy_isomorphic(board):
             move = board.matchMove(line['board'], line['move'])
-            if line['outcome'] == 1:
-                moves[move][0] += 1 #wins
-            elif line['outcome'] == -1:
-                moves[move][1] += 1 #losses
+            if move in moves: moves[move] += line['outcome']
 
     memory.close()                          
                 
