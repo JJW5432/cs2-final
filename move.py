@@ -7,7 +7,7 @@ cgitb.enable()
 
 fs = cgi.FieldStorage()
 
-input_board = Board.from_string(fs['board'].value)#given board as string)
+input_board = Board.from_string(fs['board'].value)#given board as string
 
 move = input_board.randomMove()
 
