@@ -32,8 +32,8 @@ function getMove(){
 function makeMove(event) {
 	var cell = event.target
 	if (state(cell) === 0) {
+	    memory.push("\""+getBoard()+"\","+cell.id+",-1,");
 	    cell.innerHTML = 'O';
-	    memory.push("\""+getBoard()+"\","+cell.id+",-1,")
 	    move = getMove(cell);
 	    //console.log(move)
 	    if ('123456789'.search(move) != -1) {
