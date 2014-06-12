@@ -66,7 +66,9 @@ function endGame(winner) {
 	    p.html("Sorry you lost!");
 	    p.addClass('lose');
 	    $.each(lane,function(i, val){
-		$("#"+val).addClass('lose')
+		cell = $("#"+val)
+		cell.html('X')
+		cell.addClass('lose')
 	    })
 	} else if (winner[0] === "tie") {
 	    outcome = 0

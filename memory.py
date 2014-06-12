@@ -1,4 +1,5 @@
 #!/usr/bin/python
+print "Content-Type: text/html\n"
 print ""
 
 import cgi
@@ -8,6 +9,10 @@ cgitb.enable()
 
 fs = cgi.FieldStorage()
 
-f = open('memory.csv', 'a')
-f.write(fs['memory'].value+str(datetime.today())
-f.close()
+long_term = open('memory.csv', 'a')
+short_term = fs['memory'].value.split('\n')
+now = str(datetime.today())
+
+for entry in short_term:
+    long_term.write(entry+now+'\n')
+long_term.close()

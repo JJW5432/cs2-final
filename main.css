@@ -93,7 +93,7 @@ td.h{
     visibility: hidden;
 }
 
-#overlay.visible p{
+#overlay.visible *{
     color:white;
     font-size: 10em;
     text-align: center;

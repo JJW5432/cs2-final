@@ -13,7 +13,7 @@ fs = cgi.FieldStorage()
 def parseLine(line):
     pos = line[1:].find('"')+1
     board= Board.unserialize(line[1:pos])
-    line = map(int, line[pos+2:].split(',')) #[cell,player,outcome]
+    line = map(int, line[pos+2:].split(',')[:-1]) #[cell,player,outcome]
     move = Cell(line[0], 0)
     outcome = line[2]
     return {'board': board, 'move':move, 'outcome':outcome}
