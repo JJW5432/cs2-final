@@ -210,7 +210,7 @@ class Board(object):
         return sorted([ncell for ncell in self.cells if ncell.x == cell.x])
 
     def diagonal(self,cell):
-        if cell.cooreds = (0,0): return False
+        if cell.coords == (0,0): return False
         if cell.x == cell.y: return [ncell for ncell in self.cells if ncell.x == ncell.y]
         elif cell.x == -cell.y: return [ncell for ncell in self.cells if ncell.x == -ncell.y]
         else: return False
