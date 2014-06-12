@@ -157,16 +157,7 @@ class Board(object):
         return Board([Cell(x,s[x-1]) for x in range(1,10)])
     
     def over(self):
-        cells = self.cells
-        lanes = []
-        lanes.append([cell for cell in cells if cell.x == -1])
-        lanes.append([cell for cell in cells if cell.x == 0])
-        lanes.append([cell for cell in cells if cell.x == 1])
-        lanes.append([cell for cell in cells if cell.y == -1])
-        lanes.append([cell for cell in cells if cell.y == 0])
-        lanes.append([cell for cell in cells if cell.y == 1])
-        lanes.append([cell for cell in cells if cell.x == cell.y])
-        lanes.append([cell for cell in cells if cell.x == -cell.y])
+        lanes = self.lanes()
         for lane in lanes:
             states = [cell.state for cell in lane]
             if max(states) == -1:
@@ -198,3 +189,28 @@ class Board(object):
 
     def empties(self):
         return [cell for cell in self.cells if cell.empty()]
+
+    def lanes(self):
+        cells = self.cells
+        lanes = []
+        lanes.append([cell for cell in cells if cell.x == -1])
+        lanes.append([cell for cell in cells if cell.x == 0])
+        lanes.append([cell for cell in cells if cell.x == 1])
+        lanes.append([cell for cell in cells if cell.y == -1])
+        lanes.append([cell for cell in cells if cell.y == 0])
+        lanes.append([cell for cell in cells if cell.y == 1])
+        lanes.append([cell for cell in cells if cell.x == cell.y])
+        lanes.append([cell for cell in cells if cell.x == -cell.y])
+        return lanes
+
+    def row(self, cell):
+        return sorted([ncell for ncell in self.cells if ncell.y == cell.y])
+
+    def column(self,cell):
+        return sorted([ncell for ncell in self.cells if ncell.x == cell.x])
+
+    def diagonal(self,cell):
+        if cell.cooreds = (0,0): return False
+        if cell.x == cell.y: return [ncell for ncell in self.cells if ncell.x == ncell.y]
+        elif cell.x == -cell.y: return [ncell for ncell in self.cells if ncell.x == -ncell.y]
+        else: return False
