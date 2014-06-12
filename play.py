@@ -1,4 +1,4 @@
-B#!/usr/bin/python
+#!/usr/bin/python
 print "Content-Type: text/html\n"
 print ""
 from tic_lib import *
