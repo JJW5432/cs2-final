@@ -61,7 +61,7 @@ function endGame(winner) {
 		$("#"+val).addClass('win')
 	    })
 	} else if (winner[0] === "computer") {
-	    outcome = memory.length
+	    outcome = 9-memory.length+1
 	    lane = winner[1].split(',')
 	    p.html("Sorry you lost!");
 	    p.addClass('lose');
