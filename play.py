@@ -28,6 +28,7 @@ def chooseMove():
     return random.choice(weighted_moves)
 
 board = Board.unserialize(fs['board'].value) # given board as string
+#board = Board.unserialize('-1,0,0,0,0,0,0,0,0')
 empties = board.empties()
 over = board.over()
 
