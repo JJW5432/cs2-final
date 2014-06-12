@@ -1,4 +1,4 @@
-#!/usr/bin/python
+B#!/usr/bin/python
 print "Content-Type: text/html\n"
 print ""
 from tic_lib import *
@@ -6,8 +6,8 @@ from tic_lib import *
 import random
 
 import cgi
-#import cgitb
-#cgitb.enable()
+import cgitb
+cgitb.enable()
 fs = cgi.FieldStorage()
 
 def parseLine(line):
@@ -27,8 +27,8 @@ def chooseMove():
         weighted_moves.extend([move]*ratio)
     return random.choice(weighted_moves)
 
-#board = Board.unserialize(fs['board'].value) # given board as string
-board = Board.unserialize('-1,0,0,0,0,0,0,0,0')
+board = Board.unserialize(fs['board'].value) # given board as string
+#board = Board.unserialize('-1,0,0,0,0,0,0,0,0')
 empties = board.empties()
 over = board.over()
 
