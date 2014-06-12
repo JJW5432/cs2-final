@@ -1,4 +1,4 @@
-Bvar cells = $('td'),
+var cells = $('td'),
 	memory = []
 cells.click(makeMove)
 
@@ -74,7 +74,9 @@ function endGame(winner) {
 	    p.addClass('tie');
 	}
 	cells.off('click')
+    $.each(memory, function(i, val){
 	memory[i] = val + String(outcome) + ',';
+    })
 	$.ajax({
 		type: 'POST',
 		url: './memory.py',
