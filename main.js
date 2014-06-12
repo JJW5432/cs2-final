@@ -1,16 +1,7 @@
 var cells = $('td'),
 	memory = []
 cells.click(makeMove)
-$("#win").click(function(){endGame(true); return false})
-$("#lose").click(function(){endGame(false); return false})
 
-function coords(n) {
-	var ys = [1, 1, 1, 0, 0, 0, -1, -1, -1],
-		xs = [-1, 0, 1, -1, 0, 1, -1, 0, 1],
-		y = ys[n-1],
-		x = xs[n-1];
-	return [x,y]
-}
 
 function state(cell) {
   if (cell.innerHTML === "O") {return -1}
@@ -21,8 +12,7 @@ function state(cell) {
 function getBoard() {
     board = '';  
     cells.each(function(){
-		coord = coords(Number(this.id))
-		board += String(coord[0]) + ',' + String(coord[1]) + ',' + String(state(this)) + ','
+		board += String(state(this)) + ','
     })
     return board.slice(0,-1)
 }
@@ -31,7 +21,7 @@ function getMove(){
     var board = getBoard(), results;
     $.ajax({
 		type: 'POST',
-		url: './move.py',
+		url: './play.py',
 		data: {'board':board},
 		success: function(data){results = data},
 		async:false
@@ -45,36 +35,55 @@ function makeMove(event) {
 	    cell.innerHTML = 'O';
 	    memory.push("\""+getBoard()+"\","+cell.id+",-1,")
 	    move = getMove(cell);
+	    //console.log(move)
 	    if ('123456789'.search(move) != -1) {
 	    	move_cell = document.getElementById(move)
 			move_cell.innerHTML = 'X';
-			memory.append("\""+getBoard()+"\","+move_.id+",1,")
+			memory.push("\""+getBoard()+"\","+move_cell.id+",1,")
 	    }
-	    else if (move === "user") { //the game is won
-			endGame(true);
-	    }
-	    else {
-			endGame(false)
-	    }
+	    else {endGame(move)}
 	}
 }
 	
-function endGame(won) {
-	var el = $("#overlay"),
-		p = el.find('p');
+function endGame(winner) {
+    console.log(winner)
+    var el = $("#overlay"),
+    p = el.find('p'),
+    winner = winner.split('\n'),
+    outcome;
 	el.toggleClass('visible')
-	if (won) {
-		p.html("You&rsquo;ve won!");
+	if (winner[0] === "user") {
+	    outcome = -1
+	    lane = winner[1].split(',')
+	    p.html("You&rsquo;ve won!");
 		p.addClass('win');
-	} else {
-		p.html("Sorry you lost!");
-		p.addClass('lose');
+	    $.each(lane,function(i, val){
+		$("#"+val).addClass('win')
+	    })
+	} else if (winner[0] === "computer") {
+	    outcome = 1
+	    lane = winner[1].split(',')
+	    p.html("Sorry you lost!");
+	    p.addClass('lose');
+	    $.each(lane,function(i, val){
+		$("#"+val).addClass('lose')
+	    })
+	} else if (winner[0] === "tie") {
+	    outcome = 0
+	    p.html("A tie!");
+	    p.addClass('tie');
 	}
 	cells.off('click')
+	date = new Date()
+	date = date.toISOString()
+    $.each(memory, function(i, val){
+	memory[i] = val + String(outcome) +',' + date;
+})
 	$.ajax({
 		type: 'POST',
 		url: './memory.py',
 		data: {'memory':memory.join('\n')},
+	    success: function(data){console.log(data)},
 		async: true
 	});
 }
