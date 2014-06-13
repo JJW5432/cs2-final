@@ -4,7 +4,7 @@ print ""
 from tic_lib import *
 
 import random
-
+#import sys
 import cgi
 import cgitb
 cgitb.enable()
@@ -22,30 +22,34 @@ def chooseMove():
     '''uses weighted probabilities to choose move'''
     weighted_moves = []
     for move in moves:
+        if type(moves[move]) is list: moves[move] = (moves[move][0]-moves[move][1])/(moves[move][0]+moves[move][1])
         record = moves[move]
-        if record < 1: record = 1 #so every move has hope
-        weighted_moves.extend([move]*record)
-    return random.choice(weighted_moves)
+    return max(moves, key=moves.get)
 
 board = Board.unserialize(fs['board'].value) # given board as string
-#board = Board.unserialize('-1,0,0,0,0,0,0,0,0')
+#board = Board.unserialize(sys.argv[1])
 empties = board.empties()
 over = board.over()
 
 if not over[0]:
-    moves = {cell: 200 for cell in empties} 
-
+    moves = {cell: [1.,1.] for cell in empties} 
+    for move in moves:
+        for lane in board.lane(move):
+            if len([cell for cell in lane if cell.filled() and cell.mine()]) >= 2: moves[move] = 1.1
+            elif len([cell for cell in lane if cell.filled() and cell.theirs()]) >= 2: moves[move] = 1
     memory = open("memory.csv")
 
     for line in memory:
         line = parseLine(line)
+        if (~line['board']).fuzzy_isomorphic(board):
+            line['board'] = ~line['board']
+            line['outcome'] = -1 * line['outcome']
         if line['board'].fuzzy_isomorphic(board):
-            move = board.matchMove(line['board'], line['move'])
-            if move in moves: moves[move] += line['outcome']
-        elif (~line['board']).fuzzy_isomorphic(board):
-            move = ~board.matchMove(~line['board'], line['move'])
-            if move in moves: move[move] -= line['outcome']
-            
+            move = board.matchMove(line['board'],line['move'])
+            if move in moves and type(moves[move]) is list:
+                if line['outcome'] > 1: moves[move][0] += line['outcome']
+                elif line['outcome'] < 1: moves[move][1] -= line['outcome']
+                else: moves[move][0] += 0.5
 
     memory.close()                          
                 

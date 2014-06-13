@@ -223,3 +223,6 @@ class Board(object):
 
     def theirs(self):
         return Board([cell for cell in self.cells if cell.theirs()]) 
+
+    def lane(self, cell):
+        return [lane for lane in self.lanes() if self[cell.num] in lane]

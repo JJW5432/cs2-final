@@ -108,3 +108,12 @@ td.h{
 .win{background-color:green;}
 .lose{background-color:red;}
 .tie{background-color:#8b8b0a;}
+
+#overlay.visible p{
+    margin: 0;
+    margin-top: 0.5em;
+}
+#overlay.visible a{
+    padding-bottom: 0.5em;
+    text-decoration: none;
+}

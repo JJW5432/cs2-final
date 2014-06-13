@@ -57,7 +57,7 @@ function endGame(winner) {
     outcome;
 	el.toggleClass('visible')
 	if (winner[0] === "user") {
-	    outcome = -1*(9-memory.length+1)
+	    outcome = -1
 	    if (outcome === -5) {outcome=-9}
 	    lane = winner[1].split(',')
 	    p.html("You&rsquo;ve won!");
@@ -66,7 +66,7 @@ function endGame(winner) {
 		$("#"+val).addClass('win')
 	    })
 	} else if (winner[0] === "computer") {
-	    outcome = 9-memory.length+1
+	    outcome = 1
 	    lane = winner[1].split(',')
 	    p.html("Sorry you lost!");
 	    p.addClass('lose');
@@ -76,13 +76,16 @@ function endGame(winner) {
 		cell.addClass('lose')
 	    })
 	} else if (winner[0] === "tie") {
-	    outcome = 3
+	    outcome = 0
 	    p.html("A tie!");
 	    p.addClass('tie');
 	}
 	cells.off('click')
     $.each(memory, function(i, val){
-	memory[i] = val + String(outcome) + ',';
+	if (i >= memory.length-2 && outcome !== 0) {
+	    memory[i] = val + String(Math.sign(outcome)*(Math.abs(outcome)+3))+','
+    }
+	   else {memory[i] = val + String(outcome) + ',';}
     })
 	$.ajax({
 		type: 'POST',
