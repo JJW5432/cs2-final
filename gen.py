@@ -27,7 +27,7 @@ board = Board()
 short_term = []
 
 while True:
-    print 'starting'
+#    print 'starting'
     if not board.over()[0]:
         empties = board.empties()
         moves = {cell: [1., 1.] for cell in empties} #[wins, losses]
@@ -42,7 +42,7 @@ while True:
             if (~line['board']).is_isomorphic(board):
                 line['board'], line['outcome'] = ~(line['board']), -line['outcome']
             if line['board'].is_isomorphic(board):
-                move = board.matchMove(line['board'], line['move'])
+                move = line['board'].matchMove(board, line['move'])
                 if line['outcome'] == 1:
                     moves[move][0] += 1 #wins
                 elif line['outcome'] == -1:
@@ -52,18 +52,20 @@ while True:
                 
         move = chooseMove()
         
-        short_term.append('"'+board.serialize()+'",'+str(move.num)+",1,1,");
+        short_term.append('"'+board.serialize()+'",'+str(move.num)+",1,");
 
         board.move(move.with_state(1))
         print short_term
 
     if board.over()[0]:
-
+        print 'game'
+        winners = {'computer':1, 'user':-1, 'tie':0}
+        outcome = str(winners[board.over()[1]])
         long_term = open('memory.csv', 'a')
         now = str(datetime.today())
 
         for entry in short_term:
-            long_term.write(entry+now+'\n')
+            long_term.write(entry+outcome+','+now+'\n')
         long_term.close()
 
         board = Board()

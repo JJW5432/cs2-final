@@ -103,7 +103,6 @@ class Board(object):
         return hash( tuple([hash(cell) for cell in self.cells]) )
     
     def __eq__(self,other):
-        if type(self) != type(other): return False
         return type(other) == type(self) and self.cells == other.cells
     
     def __ne__(self,other):
@@ -117,7 +116,7 @@ class Board(object):
         >>> Board.is_isomorphic(Board.from_dict({(-1,1):"x",(0,1):"o",(1,1):" ",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "}), ~Board.from_dict({(-1,1):" ",(0,1):"o",(1,1):"x",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "}))
         True
         '''
-        return type(other) == type(self) and (other in self.isoboards() or ~other in self.isoboards())
+        return type(other) == type(self) and other in self.isoboards()
 
     def __str__(self):
         """returns the string that should be printed when you print a board """
