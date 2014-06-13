@@ -117,10 +117,10 @@ class Board(object):
         >>> Board.is_isomorphic(Board.from_dict({(-1,1):"x",(0,1):"o",(1,1):" ",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "}), ~Board.from_dict({(-1,1):" ",(0,1):"o",(1,1):"x",(-1,0):" ",(0,0):" ",(1,0):" ",(-1,-1):" ",(0,-1):" ",(1,-1):" "}))
         True
         '''
-        return type(other) == type(self) and (other in self.isoboards() or ~other in self.isoboards())
+        return type(other) == type(self) and other in self.isoboards()
 
     def fuzzy_isomorphic(self,other):
-        return self.theirs().is_isomorphic(other.theirs()) or self.mine().is_isomorphic(other.mine())
+        return self.mine().is_isomorphic(other.mine()) or self.is_isomorphic(other)
     
     def __str__(self):
         """returns the string that should be printed when you print a board """

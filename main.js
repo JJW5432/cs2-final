@@ -20,29 +20,33 @@ function getBoard() {
 function getMove(){
     var board = getBoard(), results;
     $.ajax({
-		type: 'POST',
-		url: './play.py',
-		data: {'board':board},
-		success: function(data){results = data},
-		async:false
+	type: 'POST',
+	url: './play.py',
+	data: {'board':board},
+	success: function(data){
+	    var move = data.trim()
+	    if ('123456789'.search(move) != -1) {
+	    	move_cell = document.getElementById(move)
+		move_cell.innerHTML = 'X';
+		memory.push("\""+getBoard()+"\","+move_cell.id+",1,")	
+	    }
+	    else {endGame(move)};
+	    cells.click(makeMove)
+},
+	async:true
 	});
-    return results.trim()
+    return false
 };
 
 function makeMove(event) {
-	var cell = event.target
+    var cell = event.target;
+    cells.off('click')
 	if (state(cell) === 0) {
 	    memory.push("\""+getBoard()+"\","+cell.id+",-1,");
 	    cell.innerHTML = 'O';
-	    move = getMove(cell);
-	    //console.log(move)
-	    if ('123456789'.search(move) != -1) {
-	    	move_cell = document.getElementById(move)
-			move_cell.innerHTML = 'X';
-			memory.push("\""+getBoard()+"\","+move_cell.id+",1,")
-	    }
-	    else {endGame(move)}
+	    getMove(cell);
 	}
+        return false
 }
 	
 function endGame(winner) {
@@ -54,6 +58,7 @@ function endGame(winner) {
 	el.toggleClass('visible')
 	if (winner[0] === "user") {
 	    outcome = -1*(9-memory.length+1)
+	    if (outcome === -5) {outcome=-9}
 	    lane = winner[1].split(',')
 	    p.html("You&rsquo;ve won!");
 		p.addClass('win');
@@ -71,7 +76,7 @@ function endGame(winner) {
 		cell.addClass('lose')
 	    })
 	} else if (winner[0] === "tie") {
-	    outcome = 0
+	    outcome = 3
 	    p.html("A tie!");
 	    p.addClass('tie');
 	}
