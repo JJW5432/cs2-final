@@ -1,4 +1,4 @@
-from tic import *
+from ..tic import *
 
 def deep_strip(s):
         return '\n'.join([l.strip() for l in s.split('\n')]).strip()
