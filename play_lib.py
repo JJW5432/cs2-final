@@ -25,16 +25,21 @@ def readMem(board):
     
     for line in memory:
         line = parseLine(line)
-        line['outcome'] *= line['player'] #handle other guy
+        if board.is_isomorphic(~line['board']):
+            line['board'] = ~line['board']
+            line['outcome'] = -line['outcome']
         #print board
         #print line['board']
         #print repr(line['move'])
         if line['board'].is_isomorphic(board):
-            move = board.matchMove(line['board'], line['move'])
-            if line['outcome'] == 1:
-                moves[move][0] += 1 #wins
-            elif line['outcome'] == -1:
-                moves[move][1] += 1 #losses
+            for isomove in board.isomoves(line['board'],line['move']):
+                if isomove in moves:
+                    if line['outcome'] == 1:
+                        moves[isomove][0] += 1 #wins
+                    elif line['outcome'] == -1:
+                        moves[isomove][1] += 1 #losses
+                    elif len(board.empties)%2==1:
+                        moves[isomove][0] = 0.75
 
     memory.close()
     return moves

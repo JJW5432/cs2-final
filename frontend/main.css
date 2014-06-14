@@ -108,3 +108,13 @@ td.h{
 .win{background-color:green;}
 .lose{background-color:red;}
 .tie{background-color:#8b8b0a;}
+
+#overlay.visible a {
+    position: fixed;
+    bottom: 10px;
+    text-decoration: none;
+}
+
+#move_storage, #piece_storage {
+    display:none
+}

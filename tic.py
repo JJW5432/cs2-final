@@ -73,6 +73,8 @@ class Cell(object):
         return Cell((x,y), self.state)
 
 class Board(object):
+    transformations = [lambda x: x, lambda x: x.rotate(),  lambda x: x.rotate(2), lambda x: x.rotate(3), lambda x: x.reflect('v'), lambda x: x.reflect('h'), lambda x: x.reflect('l'), lambda x: x.reflect('r')]
+
     def __init__(self, *cells):
         self.cells = sorted([Cell(x) for x in range(1,10)])
         for cell in cells:
@@ -140,12 +142,11 @@ class Board(object):
         self.cells.append(cell)
         self.cells.sort()
 
-    @property
-    def isoboards(self):
-        return {self: lambda x: x, self.rotate(): lambda x: x.rotate(), self.rotate(2): lambda x: x.rotate(2), self.rotate(3): lambda x: x.rotate(3), self.reflect('v'): lambda x: x.reflect('v'), self.reflect('h'): lambda x: x.reflect('h'), self.reflect('l'): lambda x: x.reflect('l'), self.reflect('r'): lambda x: x.reflect('r')}
+    def isotransformations(self,other):
+        return [transformation for transformation in Board.transformations if transformation(other)==self]
 
     def is_isomorphic(self, other):
-        return type(other) == type(self) and other in self.isoboards
+        return len(self.isotransformations(other)) > 0
         
     def rotate(self,n=1):
         """rotates a given board clockwise 90 degrees n times"""
@@ -159,11 +160,9 @@ class Board(object):
         """outputs a random unoccupied position given a board"""
         return random.choice(self.empties)
         
-    def matchMove(self, other, move):
+    def isomoves(self, other, move):
         """finds equivalent move in isoboard"""
-        if not self.is_isomorphic(other):
-            return False
-        else: return other.isoboards[self](move)
+        return [transformation(move) for transformation in self.isotransformations(other)]
         
     @property
     def lanes(self):

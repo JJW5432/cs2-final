@@ -21,10 +21,17 @@ if not board.over:
     if board.over:
         if type(board.over) is list: 
             print "computer"
-            print ','.join([cell.num for cell in board.over])
+            print ','.join([str(cell.num) for cell in board.over])
         else: #tie
             print "tie"
+            print move.num
+    else:
+        print move.num
 
 else: #twas lost before it began
-    print "user"
-    print ','.join([cell.num for cell in board.over])
+    if type(board.over) is list: 
+        print "user"
+        print ','.join([str(cell.num) for cell in board.over])
+    else: #tie
+        print "tie"
+        print move.num

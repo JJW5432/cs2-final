@@ -1,11 +1,15 @@
 #!/usr/bin/python
+print "Content-Type: text/html\n"
 print ""
-print "Content-Type:text/html\n\n"
+print "<!DOCTYPE html>"
 
 import cgi
-fs = cgi.FieldStorag()
+import cgitb
+cgitb.enable()
+fs = cgi.FieldStorage()
 piece = fs['piece'].value
 
+from play_lib import *
 
 print """
 <html>
@@ -13,7 +17,6 @@ print """
         <link href="./vendor/font.woff" rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="./frontend/main.css">
         <script src="./vendor/jquery-1.11.1.min.js"></script>
-	<script src="./frontend/main.js"></script>
     </head>
     <body>
         <div class="square">
@@ -47,9 +50,15 @@ print """
         </div>
         <p id="piece_storage" display="none">
 """
-print value
-print"""
+print piece
+if piece == 'O':
+    print "</p><p id='move_storage'>"
+    moves = readMem(Board())
+    move = chooseMove(moves)
+    print move.num
+print """
        </p>
+       	<script src="./frontend/main.js"></script>
     </body>
 </html>
 """
