@@ -58,7 +58,7 @@ if piece == 'O':
     print move.num
 print """
        </p>
-       	<script src="./frontend/main.js"></script>
+       	<script src="./frontend/game.js"></script>
     </body>
 </html>
 """

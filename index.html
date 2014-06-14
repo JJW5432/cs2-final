@@ -7,11 +7,15 @@
   </head>
   <body>
     <h1>Tic-Tac-Toe</h1>
+    <h3>Choose your piece:</h3>
+    <div id="pieces">
+      <div id="x" class="piece selected">X</div>
+      <div id="o" class ="piece">O</div>
+    </div>
+    <h2>Play</h2>
     <form action="game.py" method="POST">
-      <label for="piece">Piece:</label>
-      <input type="radio" name="piece" value="X" checked>
-      <input type="radio" name="piece" value="O">
-      <input type="Submit" value="play">
+      <input type="hidden" id="piece">
     </form>
+    <script src="./frontend/index.js"></script>
   </body>
 </html>
