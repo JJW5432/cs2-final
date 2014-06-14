@@ -3,7 +3,7 @@ print "Content-Type: text/html\n"
 print ""
 from tic_lib import *
 
-import random
+#import random
 
 import cgi
 import cgitb
@@ -16,29 +16,29 @@ def parseLine(line):
     line = map(int, line[pos+2:].split(',')[:-1]) #[cell,player,outcome]
     move = Cell(line[0], 0)
     outcome = line[2]
-    return {'board': board, 'move':move, 'outcome':outcome}
+    player = line[3]
+    return {'board': board, 'move':move, 'outcome':outcome, 'player':player}
 
-def chooseMove():
+def chooseMove(moves):
     '''uses weighted probabilities to choose move'''
-    weighted_moves = []
     for move in moves:
-        record = moves[move]
-        ratio = int(round(record[0]/sum(record),3)*1000)
-        weighted_moves.extend([move]*ratio)
-    return random.choice(weighted_moves)
+        moves[move] = moves[move][0]/sum(moves[move]])
+    return max(moves, key=lambda x: moves[x])
 
 board = Board.unserialize(fs['board'].value) # given board as string
 #board = Board.unserialize('-1,0,0,0,0,0,0,0,0')
-empties = board.empties()
-over = board.over()
 
-if not over[0]:
+def readMem(board):
+    empties = board.empties
+    over = board.over
+    
     moves = {cell: [1., 1.] for cell in empties} #[wins, losses]
-
+    
     memory = open("memory.csv")
-
+    
     for line in memory:
         line = parseLine(line)
+        line['outcome'] *= line['player'] #handle other guy
         if line['board'].is_isomorphic(board):
             move = board.matchMove(line['board'], line['move'])
             if line['outcome'] == 1:
@@ -46,14 +46,22 @@ if not over[0]:
             elif line['outcome'] == -1:
                 moves[move][1] += 1 #losses
 
-    memory.close()                          
-                
-    move = chooseMove()
+    memory.close()
+    return moves
 
+if not board.over:
+    moves = readMem(board)
+    move = chooseMove(moves)
+        
     board.move(move.with_state(1))
-    over_now = board.over()
-    if over_now[0]:
-        print str(over_now[1]) + "\n" + over_now[2]
-    else: print move.num
-    
-else: print str(over[1]) + "\n" + over[2]
+
+    if board.over:
+        if type(board.over) is list: 
+            print "computer"
+            print ','.join([cell.num for cell in board.over])
+        else: #tie
+            print "tie"
+
+else: #twas lost before it began
+    print "user"
+    print ','.join([cell.num for cell in board.over])

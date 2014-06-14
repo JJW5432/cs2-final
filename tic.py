@@ -163,7 +163,7 @@ class Board(object):
         """finds equivalent move in isoboard"""
         if not self.is_isomorphic(other):
             return False
-        else: return self.isoboards[other](move)
+        else: return other.isoboards[self](move)
         
     @property
     def lanes(self):
@@ -184,20 +184,12 @@ class Board(object):
 
     @property
     def over(self):
-        lanes = self.lanes
-        for lane in lanes:
+        for lane in self.lanes:
             states = [cell.state for cell in lane]
-            if max(states) == -1:
-                winner = 'user'
-                the_lane = ','.join([str(cell.num) for cell in lane])
-                return [True, winner, the_lane]
-            elif min(states) == 1:
-                winner = 'computer'
-                the_lane = ','.join([str(cell.num) for cell in lane])
-                return [True, winner, the_lane]
-        if len(self.empties) == 0:
-            return [True, 'tie', '']
-        else: return [False]
+            if states.count(1)>=3 or states.count(-1)>=3: return lane
+        if len([cell for cell in self if cell.empty]) == 0: return True
+        else:
+            return False
 
     def row(self, cell):
         return sorted([ncell for ncell in self if ncell.y == cell.y])
