@@ -1,4 +1,4 @@
-from tic_lib import *
+from tic import *
 
 def deep_strip(s):
         return '\n'.join([l.strip() for l in s.split('\n')]).strip()
@@ -48,20 +48,20 @@ class TestBoard:
                 board2[5] = 1
                 assert board2[5] == Cell((0,0),1)
                 assert [cell for cell in board3] == [Cell(1),Cell(2,-1), Cell(3,1),Cell(4),Cell(5),Cell(6),Cell(7),Cell(8),Cell(9)]
-                assert board1.mine() == [Cell(1,1), Cell(3,1), Cell(4,1), Cell(5,1)]
-                assert board1.theirs() == [Cell(2,-1), Cell(6,-1), Cell(7,-1), Cell(9,-1)]
+                assert board1.mine == [Cell(1,1), Cell(3,1), Cell(4,1), Cell(5,1)]
+                assert board1.theirs == [Cell(2,-1), Cell(6,-1), Cell(7,-1), Cell(9,-1)]
         
         def test_over(self):
-                assert board1.empties() == [Cell(8)]
-                assert not board1.over()[0]
+                assert board1.empties == [Cell(8)]
+                assert not board1.over[0]
                 board1[8] = -1
-                assert board1.over()[0]
-                assert board1.over()[1] == 'user'
-                assert board1.over()[2] == '7,8,9'
+                assert board1.over[0]
+                assert board1.over[1] == 'user'
+                assert board1.over[2] == '7,8,9'
                 board1[8] = 0
 
         def test_lanes(self):
-                assert board1.lanes()[0] == [Cell(1,1),Cell(4,1),Cell(7,-1)]
+                assert board1.lanes[0] == [Cell(1,1),Cell(4,1),Cell(7,-1)]
                 assert board1.row(board1[5]) == [Cell(4,1),Cell(5,1),Cell(6,-1)]
                 assert board1.column(board1[5]) == [Cell(2,-1),Cell(5,1),Cell(8,0)]
                 assert board1.diagonal(board1[1]) == [Cell(1,1),Cell(5,1),Cell(9,-1)]

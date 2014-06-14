@@ -98,7 +98,7 @@ class Board(object):
         return out.strip('\n')
     
     def __repr__(self):
-        return "<Board x:" + str(tuple([self.mine()])) + ", o:" + str(tuple([self.theirs()])) + ">"
+        return "<Board x:" + str(tuple([self.mine])) + ", o:" + str(tuple([self.theirs])) + ">"
 
     @classmethod
     def from_list(cls,s):
@@ -140,11 +140,12 @@ class Board(object):
         self.cells.append(cell)
         self.cells.sort()
 
+    @property
     def isoboards(self):
         return {self: lambda x: x, self.rotate(): lambda x: x.rotate(), self.rotate(2): lambda x: x.rotate(2), self.rotate(3): lambda x: x.rotate(3), self.reflect('v'): lambda x: x.reflect('v'), self.reflect('h'): lambda x: x.reflect('h'), self.reflect('l'): lambda x: x.reflect('l'), self.reflect('r'): lambda x: x.reflect('r')}
 
     def is_isomorphic(self, other):
-        return type(other) == type(self) and other in self.isoboards()
+        return type(other) == type(self) and other in self.isoboards
         
     def rotate(self,n=1):
         """rotates a given board clockwise 90 degrees n times"""
@@ -156,14 +157,15 @@ class Board(object):
 
     def randomMove(self):
         """outputs a random unoccupied position given a board"""
-        return random.choice(self.empties())
+        return random.choice(self.empties)
         
     def matchMove(self, other, move):
         """finds equivalent move in isoboard"""
         if not self.is_isomorphic(other):
             return False
-        else: return self.isoboards()[other](move)
+        else: return self.isoboards[other](move)
         
+    @property
     def lanes(self):
         lanes = []
         lanes.append([cell for cell in self if cell.x == -1])
@@ -176,11 +178,13 @@ class Board(object):
         lanes.append([cell for cell in self if cell.x == -cell.y])
         return lanes
 
+    @property
     def empties(self):
         return [cell for cell in self if cell.empty]
 
+    @property
     def over(self):
-        lanes = self.lanes()
+        lanes = self.lanes
         for lane in lanes:
             states = [cell.state for cell in lane]
             if max(states) == -1:
@@ -191,7 +195,7 @@ class Board(object):
                 winner = 'computer'
                 the_lane = ','.join([str(cell.num) for cell in lane])
                 return [True, winner, the_lane]
-        if len(self.empties()) == 0:
+        if len(self.empties) == 0:
             return [True, 'tie', '']
         else: return [False]
 
@@ -207,8 +211,10 @@ class Board(object):
         elif cell.x == -cell.y: return [ncell for ncell in self if ncell.x == -ncell.y]
         else: return False
     
+    @property
     def mine(self):
         return [cell for cell in self if cell.mine]
         
+    @property
     def theirs(self):
         return [cell for cell in self if cell.theirs]
