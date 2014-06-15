@@ -7,8 +7,8 @@ import cgi
 import cgitb
 cgitb.enable()
 fs = cgi.FieldStorage()
-#piece = fs['piece'].value
-piece = 'X'
+piece = fs['piece'].value
+#piece = 'X'
 
 from play_lib import *
 
