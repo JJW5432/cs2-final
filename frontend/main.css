@@ -25,7 +25,7 @@ h2:hover{
     color: #CC66FF;
     text-shadow:
     3px 3px 0 #000,
-    -1px -1px 0 #000,  
+    -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
     1px 1px 0 #000;
@@ -93,9 +93,9 @@ h3 {
 
 table {
     display:relative;
-    width:100%;
-    height:100%;
-
+    width:400px;
+    height:400px;
+    margin: auto;
 }
 
 .square {
@@ -112,19 +112,17 @@ table {
 }
 
 tr {
-    height:33.333333%;
-    width:100%;
 }
 
 td {
-    width:33.3333%;
     text-align: center;
     color: white;
-	font-family: Arial;
-	font-size: 10em;
-	text-transform: uppercase;
+    font-family: Arial;
+    font-size: 10em;
+    text-transform: uppercase;
     padding:0;
     position:relative;
+    width:33.333333333%;
 }
 
 td.v {
