@@ -18,6 +18,7 @@ function tableResize() {
                     d = Math.min(w,h);
                 table.width(0.9*d);
                 table.height(0.9*d)
+                $("td").css('font-size', 0.9*0.3*0.9*d)
             }
             tableResize();
             $(window).resize(tableResize)
