@@ -73,7 +73,7 @@ function makeMove(event) {
     winner = winner.split('\n'),
     outcome;
     el.toggleClass('visible')
-    lane = winner[1].split(',')
+	lane = winner.length>1 ? winner[1].split(',') : []
     if (winner[0] === "user") {
         outcome = -1
         p.html("You&rsquo;ve won!");
