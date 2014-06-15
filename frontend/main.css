@@ -16,11 +16,35 @@ h1{
 
 h2 {
     font-size:10em;
-    color:rgb(200,0,0);
+    color: #CC66FF;
+    display:inline;
 }
 
-h2:hover,h2:active{
-    color:rgb(4, 95, 4);
+h2:hover{
+    /*color:rgb(4, 95, 4);*/
+    color: #CC66FF;
+    text-shadow:
+    3px 3px 0 #000,
+    -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+h2:active{
+    text-shadow:
+    1px 3px 0 #000,
+    -0.5px -1px 0 #000,
+    0.5px -1px 0 #000,
+    0.5px 1px 0 #000,
+    0.5px 1px 0 #000;
+    position: relative;
+    top: 2px;
+}
+
+#play {
+    text-align: center;
+    margin: 4em;
 }
 
 h3 {
