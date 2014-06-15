@@ -1,15 +1,17 @@
-function toggle(){
-    $(".piece").each(function(i){
-        $(this).toggleClass('selected')
-        $(this).off()
-    })
-    $(".piece").not('.selected').click(toggle)
+function toggle() {
+    "use strict";
+    $(".piece").each(function (i) {
+        $(this).toggleClass('selected');
+        $(this).off();
+    });
+    $(".piece").not('.selected').click(toggle);
 }
 
-$(".piece").not('.selected').click(toggle)
-play = $("h2")
-play.click(function(){
-    piece = $(".piece.selected").html()
-    $("form #piece").val(piece)
-    $("form").submit()
-})
+$(".piece").not('.selected').click(toggle);
+var play = $("h2");
+play.click(function () {
+    "use strict";
+    var piece = $(".piece.selected").html();
+    $("form #piece").val(piece);
+    $("form").submit();
+});
