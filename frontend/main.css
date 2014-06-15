@@ -15,36 +15,28 @@ h1{
 }
 
 h2 {
-    font-size:10em;
-    color: #CC66FF;
     display:inline;
 }
 
-h2:hover{
-    /*color:rgb(4, 95, 4);*/
-    color: #CC66FF;
-    text-shadow:
-    3px 3px 0 #000,
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
-}
 
-h2:active{
-    text-shadow:
-    1px 3px 0 #000,
-    -0.5px -1px 0 #000,
-    0.5px -1px 0 #000,
-    0.5px 1px 0 #000,
-    0.5px 1px 0 #000;
-    position: relative;
-    top: 2px;
-}
+
+
 
 #play {
     text-align: center;
-    margin: 4em;
+    margin: auto;
+    display:inline;
+    font-family: 'Yanone Kaffeesatz', Arial;
+    color: white;
+    border: white 4px solid;
+    border-radius:0.1em;
+    font-size:6em;
+    padding:0.3em;
+    box-shadow: 2px 2px black
+}
+
+#play:hover *{
+    color: #CC66FF;
 }
 
 h3 {
@@ -53,7 +45,7 @@ h3 {
 }
 
 
-#pieces {
+.center {
     text-align:center;
 }
 
@@ -188,4 +180,14 @@ td.h{
 
 form{
     display:none;
+}
+
+#play_container {
+    margin-top:4em
+}
+
+
+
+#play:active {
+    box-shadow: inset 0px 0px 1px 1px black
 }
