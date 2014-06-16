@@ -7,6 +7,10 @@ import datetime
 
 from about_lib import *
 
+import cgi
+import cgitb
+cgitb.enable()
+fs = cgi.FieldStorage()
 
 print '''
 <html>
@@ -33,35 +37,46 @@ print str(datetime.datetime.now().date())
 
 print find(str(datetime.datetime.now().date()))
 
+year = fs["year"].value
+month = fs["month"].value
+day = fs["day"].value
+
 print '''
         <br>
         <h2>Search a Date</h2>
+'''
+
+try:
+    print year+"-"+month+"-"+day
+    print find(year+"-"+month+"-"+day)
+except:
+    print '''
         <table>
             <tr>
             <form name="input" method="GET" action="find_about.py">
                 <td>
                     Year:
-'''
+    '''
 
-print options(yearOptions(),"year",str(datetime.datetime.now().date())[:4])
+    print options(yearOptions(),"year",str(datetime.datetime.now().date())[:4])
 
-print '''
+    print '''
                 </td>
                 <td>
                     Month:
-'''
+    '''
 
-print options(["01","02","03","04","05","06","07","08","09","10","11","12"],"month",str(datetime.datetime.now().date())[5:7])
+    print options(["01","02","03","04","05","06","07","08","09","10","11","12"],"month",str(datetime.datetime.now().date())[5:7])
 
-print '''
+    print '''
                 </td>
                 <td>
                     Day:
-'''
+    '''
 
-print options(["01","02","03","04","05","06","07","08","09","10","11","12",'13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],"day",str(datetime.datetime.now().date())[8:10])
+    print options(["01","02","03","04","05","06","07","08","09","10","11","12",'13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],"day",str(datetime.datetime.now().date())[8:10])
 
-print '''
+    print '''
                 </td>
                 <td>
                     <input type="submit" value="Find!">
@@ -69,9 +84,9 @@ print '''
                 </form>
             </tr>
         </table>
-'''
+    '''
 
-print '''
+    print '''
         <br>
         <h2>Show All Data</h2>
         <br>
@@ -79,7 +94,7 @@ print '''
             <input type="submit" value="Show" 
                 name="show" id="show" />
         </form>
-'''
+    '''
 
 import os
 if os.environ["QUERY_STRING"] == 'show=Show':
