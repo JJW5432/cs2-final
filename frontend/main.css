@@ -168,3 +168,9 @@ form {
 #play:active {
     box-shadow: inset 0px 0px 1px 1px black
 }
+a {
+    color: white;
+    font-family: 'Yanone Kaffeesatz', Arial;   
+    text-decoration:none;
+    font-size:3em;
+}

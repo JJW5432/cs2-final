@@ -42,10 +42,13 @@ td {
     font-size: 1.2em;
     border: 1px solid white;
 }
-a:link {
+a {
+    font-family: 'Yanone Kaffeesatz', Arial; 
     color: white;
     font-size: 2em;
     display: inline;
+    text-decoration:none;
+
 }
 /* mouse over link */
 
