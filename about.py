@@ -16,7 +16,6 @@ print '''
     </head>
     <body>
         <h1>About Tic-Tac-Toe</h1>
-<<<<<<< HEAD
         <p>This page is a study of machine learning, using the model game of Tic-Tac-Toe. Each time the user plays a game, data about the success of chosen moves is added to the computer's memory. The computer then uses this memory to choose future moves, becoming more intelligent about the game as it plays more often. Data below displays statistics about the computer's gameplay for both its entire memory, and the current date. Note that wins are considered successful, ties are considered half as successful, and losses are not considered successful.</p>
         
 =======
@@ -25,12 +24,6 @@ print '''
 # current date and time information
 
 print '''
-<p>This page is a study of machine learning, using the model game of Tic-Tac-Toe. Each time the user plays a game, data about the success of chosen moves is added to the computer's memory. The computer then uses this memory to choose future moves, becoming more intelligent about the game as it plays more often. Data below displays statistics about the computer's gameplay for both its entire memory, and the current date. Note that wins are considered successful, ties are considered half as successful, and losses are not considered successful.</p>
-
-<<<<<<< HEAD
->>>>>>> 3e15c2ad1ccc3e7d51ce0deeb6484fdeec80d8a3
-=======
->>>>>>> 3e15c2ad1ccc3e7d51ce0deeb6484fdeec80d8a3
         <h2>Current Statistics</h2>
 '''
 
@@ -47,14 +40,7 @@ print str(datetime.datetime.now().date())
 print find(str(datetime.datetime.now().date()))
 
 print '''
-<<<<<<< HEAD
-=======
 </table>
-
-<<<<<<< HEAD
->>>>>>> 3e15c2ad1ccc3e7d51ce0deeb6484fdeec80d8a3
-=======
->>>>>>> 3e15c2ad1ccc3e7d51ce0deeb6484fdeec80d8a3
         <br>
         <h2>Search a Date</h2>
         <table>
@@ -90,17 +76,9 @@ print '''
                 </form>
             </tr>
         </table>
-<<<<<<< HEAD
-<<<<<<< HEAD
 '''
 
 print '''
-=======
-
->>>>>>> 3e15c2ad1ccc3e7d51ce0deeb6484fdeec80d8a3
-=======
-
->>>>>>> 3e15c2ad1ccc3e7d51ce0deeb6484fdeec80d8a3
         <br>
         <h2>Show All Data</h2>
         <br>
