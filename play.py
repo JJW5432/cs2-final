@@ -34,4 +34,3 @@ else: #twas lost before it began
         print ','.join([str(cell.num) for cell in board.over])
     else: #tie
         print "tie"
-        print move.num

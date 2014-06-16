@@ -1,21 +1,28 @@
 <html>
-  <head>
+
+<head>
     <title>Coding Butterflies</title>
     <link href="./vendor/font.woff" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="./frontend/main.css">
     <script src="./vendor/jquery-1.11.1.min.js"></script>
-  </head>
-  <body>
+</head>
+
+<body>
     <h1>Tic-Tac-Toe</h1>
     <h3>Choose your piece:</h3>
-    <div id="pieces">
-      <div id="x" class="piece selected">X</div>
-      <div id="o" class ="piece">O</div>
+    <div class="center">
+        <div id="x" class="piece selected">X</div>
+        <div id="o" class="piece">O</div>
     </div>
-    <h2>Play</h2>
+    <div class="center" id="play_container">
+        <div id="play">
+            <h2>Play</h2>
+        </div>
+    </div>
     <form action="game.py" method="POST">
-      <input type="hidden" id="piece" name="piece">
+        <input type="hidden" id="piece" name="piece">
     </form>
     <script src="./frontend/index.js"></script>
-  </body>
+</body>
+
 </html>
